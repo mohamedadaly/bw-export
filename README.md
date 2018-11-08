@@ -5,19 +5,19 @@ The advantage of the XML format, is that it supports importing custom fields fro
 
 ## Usage
 
-* Log into bw
+1. Log into bw
 ```bash
 bw login
 ```
 
-* Export xml
+2. Export xml
 ```bash
 python bw_export_kp.py > passwords.xml
 ```
 
-* Import the passwords.xml file into KeePass 2 (or other KeePass clones that support importing KeePass2 XML formats)
+3. Import the passwords.xml file into KeePass 2 (or other KeePass clones that support importing KeePass2 XML formats)
 
-* delete passwords.xml
+4. delete passwords.xml
 
 ## References:
 - Bitwarden CLI: https://help.bitwarden.com/article/cli/
