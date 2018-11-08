@@ -58,7 +58,7 @@ def get_protected_value(v):
     return {'#text': v, '@ProtectInMemory': 'True'}
 
 
-def get_fields(subitem, protected=[]):
+def get_fields(subitem, protected=[], prefix=''):
     """
     Returns the components of subitem as a fields array,
     protecting the items in protected list
@@ -69,6 +69,9 @@ def get_fields(subitem, protected=[]):
         # check if it's protected
         if k in protected: 
             v = get_protected_value(v)
+
+        # add prefix
+        k = prefix + k
         fields.append(dict(Key=k, Value=v))
 
     return fields
@@ -119,6 +122,25 @@ def get_entry(e):
     # Parse Identity items
     if 'identity' in e:
         fields.extend(get_fields(e['identity']))
+
+    # Parse Password History
+    if 'passwordHistory' in e:
+        hists = e['passwordHistory']
+        # loop on the list
+        for i, hist in enumerate(hists):
+            prefix = 'Old #%d ' % (i + 1)
+            fields.extend(get_fields(hist, 
+                                     protected=['password'],
+                                     prefix=prefix))
+            # # Add the password
+            # key = prefix
+            # val = get_protected_value(hist['password'])
+            # fields.append(dict(Key=key, Value=val))
+
+            # # Add the date
+            # key = prefix + ' Date'
+            # val = hist['lastUsedDate']
+            # fields.append(dict(Key=key, Value=val))
         
     # Check it's not None
     username = username or ''
