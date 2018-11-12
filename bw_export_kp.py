@@ -164,7 +164,7 @@ def get_cmd_output(cmd):
     """
     status, output = commands.getstatusoutput(cmd)
     if status != 0:
-        print("Error running command:", cmd)
+        print("Error running command: '%s'" % cmd)
         sys.exit(1)
 
     return output
