@@ -5,6 +5,8 @@ The advantage of the XML format, is that it supports importing custom fields fro
 
 ## Usage
 
+### Using bw CLI
+
 1. Log into bw
 ```bash
 bw login
@@ -13,6 +15,15 @@ bw login
 2. Export xml
 ```bash
 python bw_export_kp.py > passwords.xml
+```
+
+### Using exported json
+
+1. Export your vault into a json file
+
+2. Export xml from the json file
+```bash
+python bw_export_kp.py <path/to/json/file> > passwords.xml
 ```
 
 3. Import the passwords.xml file into KeePass 2 (or other KeePass clones that support importing KeePass2 XML formats)

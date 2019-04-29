@@ -22,6 +22,9 @@ $ bw login
 # 2. export xml
 $ python bw_export_kp.py > passwords.xml
 
+# Or export a json file from bitwarden and then export xml using
+$ python bw_export_kp.py <path/to/json/file> > passwords.xml
+
 # 3. import the passwords.xml file into KeePass 2 (or other KeePass clones that 
 # support importing KeePass2 XML formats)
 
@@ -170,17 +173,24 @@ def get_cmd_output(cmd):
     return output
 
 
-def get_bw_data():
+def get_bw_data(file_name=None):
     """
     Gets the folders and items from Bitwarden CLI
     """
-    # get folders
-    cmd = 'bw list folders'
-    folders = json.loads(get_cmd_output(cmd))
+    if file_name is None:
+        # get folders
+        cmd = 'bw list folders'
+        folders = json.loads(get_cmd_output(cmd))
 
-    # get items
-    cmd = 'bw list items'
-    items = json.loads(get_cmd_output(cmd))
+        # get items
+        cmd = 'bw list items'
+        items = json.loads(get_cmd_output(cmd))
+
+    else:
+        # load the contents of the json file
+        data = json.load(open(file_name, 'r'))
+        folders = data['folders']
+        items = data['items']
 
     return folders, items
 
@@ -189,8 +199,12 @@ def main():
     """
     Main function
     """
+    # The name of the json file
+    file_name = None
+    if len(sys.argv) > 1: file_name = sys.argv[1]
+
     # get data from bw
-    bw_folders, bw_items = get_bw_data()
+    bw_folders, bw_items = get_bw_data(file_name)
     
     # parse all entries
     entries = [get_entry(e) for e in bw_items]
