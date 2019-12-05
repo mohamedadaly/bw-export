@@ -192,6 +192,12 @@ def get_bw_data(file_name=None):
         folders = data['folders']
         items = data['items']
 
+        # Add null folder if not there
+        nullFolder = [f for f in folders if f['id'] is None]
+        if len(nullFolder) == 0:
+            folders.append({u'id': None, u'name': u'Root'})
+        # print(folders)
+
     return folders, items
 
 
